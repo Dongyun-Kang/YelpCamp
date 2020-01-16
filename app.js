@@ -7,7 +7,6 @@ var express                 = require("express"),
     passport                = require('passport'),
     LocalStrategy           = require('passport-local'),
     passportLocalMongoose   = require('passport-local-mongoose'),
-    seedDB                  = require("./seeds"),
     Campground              = require("./models/campground"),
     Comment                 = require("./models/comment"),
     User                    = require('./models/user');
@@ -28,7 +27,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
 
-// seedDB(); // SEED THE DATABASE
 
 // PASSPORT CONFIG
 app.use(require('express-session')({
