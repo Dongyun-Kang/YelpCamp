@@ -21,9 +21,8 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 // mongoose.connect("mongodb://localhost:27017/yelp_camp_v9", {useNewUrlParser: true})
-mongoose.connect("mongodb+srv://dongyun:dongyunPassword@cluster0-oi5ll.mongodb.net/test?retryWrites=true&w=majority", {
-    useNewUrlParser: true
-}).then(() => {
+mongoose.connect("mongodb+srv://dongyun:dongyunPassword@cluster0-oi5ll.mongodb.net/test?retryWrites=true&w=majority"
+).then(() => {
     console.log('Connected to DB!');
 }).catch(err => {
     console.log('Mongoose Error: ' + err.message);
