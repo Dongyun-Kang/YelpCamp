@@ -21,12 +21,10 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-// mongoose.connect("mongodb://localhost:27017/yelp_camp_v9", {useNewUrlParser: true})
-
-// mongoose.connect("mongodb+srv://dongyun:dongyunPassword@cluster0-oi5ll.mongodb.net/test?retryWrites=true&w=majority"
-// mongoose.connect("mongodb+srv://dongyun:dongyunPassword@cluster0-oi5ll.mongodb.net/YelpCamp?retryWrites=true&w=majority"
-mongoose.connect(process.env.YELPCAMPURL
-).then(() => {
+// /test?retryWrites=true&w=majority
+// /YelpCamp?retryWrites=true&w=majority
+var url = process.env.YELPCAMPURL || "mongodb://localhost:27017/yelp_camp_v9";
+mongoose.connect(url).then(() => {
     console.log('Connected to DB!');
 }).catch(err => {
     console.log('Mongoose Error: ' + err.message);
