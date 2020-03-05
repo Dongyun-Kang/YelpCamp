@@ -69,6 +69,7 @@ router.put('/:comment_id', middleware.checkCommentOwnership, (req, res) => {
         if (err) {
             res.redirect('back');
         } else {
+            req.flash("success", "Comment updated");
             res.redirect('/campgrounds/' + req.params.id);
         }
     })

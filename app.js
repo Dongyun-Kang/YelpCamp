@@ -23,7 +23,7 @@ mongoose.set('useUnifiedTopology', true);
 
 // /test?retryWrites=true&w=majority
 // /YelpCamp?retryWrites=true&w=majority
-var url = process.env.YELPCAMPURL || "mongodb://localhost:27017/yelp_camp_v9";
+var url = process.env.YELPCAMPURL || "mongodb://localhost:27017/yelp_camp_v1";
 mongoose.connect(url).then(() => {
     console.log('Connected to DB!');
 }).catch(err => {
