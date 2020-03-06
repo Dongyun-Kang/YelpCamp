@@ -1,11 +1,11 @@
-var express = require("express");
-var router  = express.Router();
-var passport = require("passport");
-var User = require("../models/user");
-var Campground = require("../models/campground");
-var async = require("async");
-var nodemailer = require("nodemailer");
-var crypto = require("crypto");
+const express = require("express");
+const router  = express.Router();
+const passport = require("passport");
+const User = require("../models/user");
+const Campground = require("../models/campground");
+const async = require("async");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 
 // root route
 router.get("/", (req, res) => {
@@ -96,13 +96,13 @@ router.post('/forgot', (req, res, next) => {
 			let smtpTransport = nodemailer.createTransport({
 				service: 'Gmail',
 				auth: {
-					user: 'dongyun8338@gmail.com',
+					user: 'dongyun8338test@gmail.com',
 					pass: process.env.GMAILPW
 				}
 			});
 			let mailOptions = {
 				to: user.email,
-				from: 'yelp@camp.com',
+				from: 'dongyun8338test@gmail.com',
 				subject: 'YelpCamp Password Reset',
 				text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
 					'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -162,13 +162,13 @@ router.post('/reset/:token', (req, res) => {
 			let smtpTransport = nodemailer.createTransport({
 				service: 'Gmail', 
 				auth: {
-					user: 'dongyun8338@gmail.com',
+					user: 'dongyun8338test@gmail.com',
 					pass: process.env.GMAILPW
 				}
 			});
 			let mailOptions = {
 				to: user.email,
-				from: 'learntocodeinfo@mail.com',
+				from: 'dongyun8338test@gmail.com',
 				subject: 'Your password has been changed',
 				text: 'Hello,\n\n' +
 					'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'

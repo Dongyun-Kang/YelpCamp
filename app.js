@@ -1,4 +1,4 @@
-var express                 = require("express"),
+const express                 = require("express"),
     app                     = express(),
     bodyParser              = require("body-parser"),
     mongoose                = require("mongoose"),
@@ -12,7 +12,7 @@ var express                 = require("express"),
     User                    = require('./models/user');
     
 // requring routes    
-var commentRoutes       = require("./routes/comments"),
+const commentRoutes       = require("./routes/comments"),
     campgroundRoutes    = require("./routes/campgrounds"),
     indexRoutes         = require("./routes/index");
 
@@ -23,7 +23,7 @@ mongoose.set('useUnifiedTopology', true);
 
 // /test?retryWrites=true&w=majority
 // /YelpCamp?retryWrites=true&w=majority
-var url = process.env.YELPCAMPURL || "mongodb://localhost:27017/yelp_camp_v1";
+const url = process.env.YELPCAMPURL || "mongodb://localhost:27017/yelp_camp_v1";
 mongoose.connect(url).then(() => {
 	console.log('Connected to DB!');
 }).catch(err => {
