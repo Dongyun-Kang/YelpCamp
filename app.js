@@ -25,9 +25,9 @@ mongoose.set('useUnifiedTopology', true);
 // /YelpCamp?retryWrites=true&w=majority
 var url = process.env.YELPCAMPURL || "mongodb://localhost:27017/yelp_camp_v1";
 mongoose.connect(url).then(() => {
-    console.log('Connected to DB!');
+	console.log('Connected to DB!');
 }).catch(err => {
-    console.log('Mongoose Error: ' + err.message);
+	console.log('Mongoose Error: ' + err.message);
 });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -38,9 +38,9 @@ app.use(flash());
 
 // PASSPORT CONFIG
 app.use(require('express-session')({
-    secret: 'My fav coffee origin is Ethiopia',
-    resave: false,
-    saveUninitialized: false
+	secret: 'My fav coffee origin is Ethiopia',
+	resave: false,
+	saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -53,10 +53,10 @@ passport.deserializeUser(User.deserializeUser());
 // middleware: using this, no need to pass req.user every time
 // It'll call this function on every single route
 app.use(function(req, res, next) {
-    res.locals.currentUser = req.user;
-    res.locals.error = req.flash("error");
-    res.locals.success = req.flash("success");
-    next();
+	res.locals.currentUser = req.user;
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
+	next();
 });
 
 app.use("/", indexRoutes);
@@ -64,5 +64,5 @@ app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
-    console.log("The YelpCamp Server Has Started!!!"); 
- });
+	console.log("The YelpCamp Server Has Started!!!"); 
+});
