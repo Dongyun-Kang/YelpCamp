@@ -12,7 +12,7 @@
 				<p class="float-right">$<%= campground.price %>/night</p>
 				<h5 class="card-title"><%= campground.name %></h5>
 				<p>
-					<em>Submitted By <a href="/users/<%= campground.author.id %>"><%= campground.author.username %></a></em>
+					<em>Submitted By <a href="/users/<%= campground.author.id %>"><%= campground.author.username %></a>, <%= moment(campground.createdAt).fromNow() %></em>
 				</p>
 				<hr>
 				<p class="card-text"><%= campground.description %></p>
@@ -36,11 +36,11 @@
 							<div class="card">
 								<div class="card-body">
 									<div class="float-left">
-										<p class="card-title"><%= comment.author.username %></p>
+										<p class="card-title"><strong><%= comment.author.username %></strong></p>
 										<p class="card-text"><%= comment.text %></p>
 									</div>
 									<div class="float-right">
-										<p>10 days ago</p>
+										<p><%= moment(comment.createdAt).fromNow() %></p>
 										<% if (currentUser && (comment.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
 											<div class="float-right">
 												<a class="btn btn-sm btn-warning" 
