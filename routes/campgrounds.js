@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
   let pageNumber = pageQuery ? pageQuery : 1;
   if(req.query.search) {
     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    Campground.find({name: regex}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allCampgrounds) => {
+    Campground.find({name: regex}).skip((perPage * pageNumber) - perPage).limit(perPage).sort({createdAt: -1}).exec((err, allCampgrounds) => {
       Campground.countDocuments({name: regex}).exec((err, count) => {
         if(err) {
           console.log(err);
@@ -43,7 +43,7 @@ router.get("/", (req, res) => {
     });
   } else {
     //Get all campgrounds from DB
-    Campground.find({}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allCampgrounds) => {
+    Campground.find({}).skip((perPage * pageNumber) - perPage).limit(perPage).sort({createdAt: -1}).exec((err, allCampgrounds) => {
       Campground.countDocuments().exec((err, count) => {
           if (err) {
               console.log(err);
