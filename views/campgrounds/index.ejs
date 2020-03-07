@@ -28,8 +28,12 @@
             <h3><%= noMatch %></h3>
         <% } else {%>
             <div class= "row">
-                <div class= "col-lg-12">
-                    <h3>Our Most Popular CampGrounds</h3>
+                <div class= "col-lg-12 mb-4">
+                    <% if(search) {%>
+                        <h3>We've found <%= count %> campgrouds.</h3>
+                    <% } else {%>
+                        <h3>We've got <%= count %> campgrouds from all over the world!</h3>
+                    <% } %>
                 </div>
             </div>
         <% } %>

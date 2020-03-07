@@ -35,6 +35,7 @@ router.get("/", (req, res) => {
               current: pageNumber,
               pages: Math.ceil(count / perPage),
               noMatch: noMatch,
+              count: count,
               search: req.query.search
             });
           }
@@ -53,6 +54,7 @@ router.get("/", (req, res) => {
               current: pageNumber,
               pages: Math.ceil(count / perPage),
               noMatch: noMatch,
+              count: count,
               search: false
             });
           }
