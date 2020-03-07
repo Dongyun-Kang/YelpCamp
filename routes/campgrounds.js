@@ -104,7 +104,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 // SHOW - shows more info about one campground
 router.get("/:id", (req, res) => {
   // find the campground with provided ID
-  Campground.findById(req.params.id).populate("comments").exec( (err, foundCampground) => {
+  Campground.findById(req.params.id).populate("comments likes").exec( (err, foundCampground) => {
     if (err || !foundCampground) {
       req.flash('error', 'Campground not found');
       res.redirect('back');
@@ -141,6 +141,37 @@ router.put("/:id", middleware.checkCampgroundOwnership, (req, res) => {
         req.flash("success","Successfully Updated!");
         res.redirect("/campgrounds/" + campground._id);
       }
+    });
+  });
+});
+
+// Campground Like Route
+router.post("/:id/like", middleware.isLoggedIn, (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if (err) {
+      console.log(err);
+      return res.redirect("/campgrounds");
+    }
+
+    // check if req.user._id exists in foundCampground.likes
+    var foundUserLike = foundCampground.likes.some((like) => {
+      return like.equals(req.user._id);
+    });
+
+    if (foundUserLike) {
+      // user already liked, removing like
+      foundCampground.likes.pull(req.user._id);
+    } else {
+      // adding the new user like
+      foundCampground.likes.push(req.user);
+    }
+
+    foundCampground.save((err) => {
+      if (err) {
+        console.log(err);
+        return res.redirect("/campgrounds");
+      }
+      return res.redirect("/campgrounds/" + foundCampground._id);
     });
   });
 });

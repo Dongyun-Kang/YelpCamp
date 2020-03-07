@@ -14,6 +14,78 @@
 				<p>
 					<em>Submitted By <a href="/users/<%= campground.author.id %>"><%= campground.author.username %></a>, <%= moment(campground.createdAt).fromNow() %></em>
 				</p>
+
+
+				<div class="float-right">
+					<button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+									data-target="#campgroundLikes">
+							<span>Total likes: <i class="fas fa-thumbs-up"></i> <%= campground.likes.length %></span>
+					</button>
+				</div>
+				
+				<div style="padding-bottom: 10px;">
+					<form action="/campgrounds/<%= campground._id %>/like" method="POST">
+							<div class="btn-group">
+									<% if (currentUser && campground.likes.some(function (like) {
+											return like.equals(currentUser._id)
+									})) { %>
+											<button class="btn btn-sm btn-primary">
+													<i class="fas fa-thumbs-up"></i> Liked (<%= campground.likes.length %>)
+											</button>
+									<% } else { %>
+											<button class="btn btn-sm btn-secondary">
+													<i class="fas fa-thumbs-up"></i> Like (<%= campground.likes.length %>)
+											</button>
+									<% } %>
+									<button type="button" class="btn btn-sm btn-light" data-toggle="modal"
+													data-target="#campgroundLikes">See more details
+									</button>
+							</div>
+					</form>
+				</div>
+
+				
+
+				<!-- Campground Likes Modal -->
+				<div id="campgroundLikes" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title" id="exampleModalLabel">Campground likes: <%= campground.likes.length %></h4>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<table class="table table-striped">
+									<thead>
+									<tr>
+										<th>Liked by:</th>
+									</tr>
+									</thead>
+									<tbody>
+									<% campground.likes.forEach(function(like) { %>
+										<tr>
+											<td><span class="badge"><i class="fas fa-user"></i></span> <%= like.username %></td>
+										</tr>
+									<% }); %>
+									<% if (campground.likes.length === 0) { %>
+										<tr>
+											<td><em>No likes yet.</em></td>
+										</tr>
+									<% } %>
+									</tbody>
+								</table>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 				<hr>
 				<p class="card-text"><%= campground.description %></p>
 				<% if (currentUser && (campground.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
