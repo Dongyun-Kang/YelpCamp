@@ -2,6 +2,9 @@
 
 <div class="row">
   <div class="col-md-4">
+    <% if (user.username === currentUser.username) {%>
+      <a href="/users/<%= user._id %>/edit">Edit</a>
+    <% } %>
     <h1><%= user.firstName + " " + user.lastName %></h1>
     <div class="card">
       <img class="card-img-top" src="<%= user.avatar %>" alt="user profile image">

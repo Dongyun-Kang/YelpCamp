@@ -6,6 +6,8 @@ const Campground = require("../models/campground");
 const async = require("async");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const middleware = require('../middleware');
+
 
 // root route
 router.get("/", (req, res) => {
@@ -180,6 +182,25 @@ router.post('/reset/:token', (req, res) => {
 		}
 	], (err) => {
 		res.redirect('/campgrounds');
+	});
+});
+
+// edit user profile
+router.get('/users/:id/edit', middleware.isLoggedIn, (req, res) => {
+	res.render('users/edit');
+});
+
+// update user profile
+router.put('/users/:id', middleware.isLoggedIn, (req, res) => {
+	let rb = req.body;
+	User.findByIdAndUpdate(req.params.id, {username: rb.username, firstName: rb.firstName, lastName: rb.lastName, email: rb.email, avatar: rb.avatar}, (err, user) => {
+		if(err){
+			req.flash("error", err.message);
+			res.redirect("back");
+		} else {
+			req.flash("success","Successfully Updated User Profile!");
+			res.redirect("/users/" + user._id);
+		}
 	});
 });
 
