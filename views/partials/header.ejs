@@ -30,10 +30,24 @@
                     <li class="nav-item">
                         <a href="/login" class="nav-link">Login</a>
                     </li>
-                    <li>
+                    <li class="nav-item">
                         <a href="/register" class="nav-link">Sign Up</a>
                     </li class="nav-item">
                 <% } else { %>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdown" role="button"
+                        aria-haspopup="true" aria-expanded="false">Notifications <span class="badge">
+                            <%= notifications.length %></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/notifications">View past notifications</a>
+                            <% notifications.forEach(notification => { %>
+                                <a class="dropdown-item" href="/notifications/<%= notification.id %>">
+                                    <%= notification.username %> created a new campground
+                                </a>
+                            <% }); %>                            
+                        </div>
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">Signed In As <%= currentUser.username %></a>
                     </li>

@@ -12,8 +12,9 @@ const express                 = require("express"),
     User                    = require('./models/user');
     
 // requring routes    
-const commentRoutes       = require("./routes/comments"),
+const commentRoutes     = require("./routes/comments"),
     campgroundRoutes    = require("./routes/campgrounds"),
+    userRoutes          = require("./routes/users"),
     indexRoutes         = require("./routes/index");
 
 mongoose.set('useNewUrlParser', true);
@@ -53,8 +54,16 @@ passport.deserializeUser(User.deserializeUser());
 
 // middleware: using this, no need to pass req.user every time
 // It'll call this function on every single route
-app.use(function(req, res, next) {
-	res.locals.currentUser = req.user;
+app.use(async (req, res, next) => {
+    res.locals.currentUser = req.user;
+    if (req.user) {
+      try {
+				let user = await User.findById(req.user._id).populate('notifications', null, { isRead: false }).exec();
+				res.locals.notifications = user.notifications.reverse();
+			} catch (err) {
+				console.log(err.message);
+			}
+    }
 	res.locals.error = req.flash("error");
 	res.locals.success = req.flash("success");
 	next();
@@ -62,6 +71,7 @@ app.use(function(req, res, next) {
 
 app.use("/", indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
+app.use("/users", userRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){

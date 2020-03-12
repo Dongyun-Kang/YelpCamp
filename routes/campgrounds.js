@@ -1,6 +1,8 @@
 const express = require("express");
 const router  = express.Router();
 const Campground = require("../models/campground");
+const User = require("../models/user");
+const Notification = require("../models/notification");
 const middleware = require('../middleware');
 const NodeGeocoder = require('node-geocoder');
 
@@ -66,7 +68,7 @@ router.get("/", (req, res) => {
 });
 
 //CREATE - add new campground to DB
-router.post("/", middleware.isLoggedIn, function(req, res){
+router.post("/", middleware.isLoggedIn, async (req, res) => {
   // get data from form and add to campgrounds array
   let name = req.body.name;
   let image = req.body.image;
@@ -87,13 +89,28 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     let location = data[0].formattedAddress;
     let newCampground = {name: name, image: image, price: price, description: desc, author:author, location: location, lat: lat, lng: lng};
     // Create a new campground and save to DB
-    Campground.create(newCampground, (err, newlyCreated) => {
+    Campground.create(newCampground, async (err, campground) => {
       if(err){
         console.log(err);
       } else {
+        try {
+          let user = await User.findById(req.user._id).populate('followers').exec();
+          let newNotification = {
+            username: req.user.username,
+            campgroundId: campground.id
+          };
+          for (const follower of user.followers) {
+            let notification = await Notification.create(newNotification);
+            follower.notifications.push(notification);
+            follower.save();
+          }
+        } catch (err) {
+          req.flash('error', err.message);
+          res.redirect('back');
+        }
         //redirect back to campgrounds page
         req.flash('success', 'Successfully created new Campground');
-        res.redirect("/campgrounds");
+        res.redirect(`/campgrounds/${campground.id}`);
       }
     });
   });
@@ -130,7 +147,7 @@ router.get("/:id/edit", middleware.checkCampgroundOwnership, (req, res) => {
 router.put("/:id", middleware.checkCampgroundOwnership, (req, res) => {
   geocoder.geocode(req.body.campground.location, (err, data) => {
     if (err || !data.length) {
-      req.flash('error', 'Invalid addr');
+      req.flash('error', err.message);
       return res.redirect('back');
     }
     req.body.campground.lat = data[0].latitude;

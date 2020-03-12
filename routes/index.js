@@ -3,6 +3,7 @@ const router  = express.Router();
 const passport = require("passport");
 const User = require("../models/user");
 const Campground = require("../models/campground");
+const Notification = require("../models/notification");
 const async = require("async");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
@@ -185,40 +186,32 @@ router.post('/reset/:token', (req, res) => {
 	});
 });
 
-// edit user profile
-router.get('/users/:id/edit', middleware.isLoggedIn, (req, res) => {
-	res.render('users/edit');
+// view all notifications
+router.get('/notifications', middleware.isLoggedIn, async (req, res) => {
+	try {
+		let user = await User.findById(req.user._id).populate({
+			path: 'notifications',
+			options: { sort: {"_id": -1 } }
+		}).exec();
+		let allNotifications = user.notifications;
+		res.render('notifications/index', { allNotifications });
+	} catch(err) {
+		req.flash('error', err.message);
+		res.redirect('back');
+	}
 });
 
-// update user profile
-router.put('/users/:id', middleware.isLoggedIn, (req, res) => {
-	let rb = req.body;
-	User.findByIdAndUpdate(req.params.id, {username: rb.username, firstName: rb.firstName, lastName: rb.lastName, email: rb.email, avatar: rb.avatar}, (err, user) => {
-		if(err){
-			req.flash("error", err.message);
-			res.redirect("back");
-		} else {
-			req.flash("success","Successfully Updated User Profile!");
-			res.redirect("/users/" + user._id);
-		}
-	});
-});
-
-// user profile
-router.get('/users/:id', (req, res) => {
-User.findById(req.params.id, (err, foundUser) => {
-		if(err) {
-			req.flash("error", "Something went wrong.");
-			res.redirect("/");
-		}
-		Campground.find().where('author.id').equals(foundUser._id).exec((err, campgrounds) => {
-			if(err) {
-				req.flash("error", "Something went wrong.");
-				res.redirect("/");
-			}
-			res.render('users/show', {user: foundUser, campgrounds: campgrounds});
-		})
-	})
+// handle notification
+router.get('/notifications/:id', middleware.isLoggedIn, async (req, res) => {
+	try {
+		let notification = await Notification.findById(req.params.id);
+		notification.isRead = true;
+		notification.save();
+		res.redirect(`/campgrounds/${notification.campgroundId}`);
+	} catch(err) {
+		req.flash('error', err.message);
+		res.redirect('back');
+	}
 });
 
 module.exports = router;
