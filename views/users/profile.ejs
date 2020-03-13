@@ -2,37 +2,40 @@
 
 <div class="row justify-content-center">
   <div class="col-md-4 text-center">
-    <h1><%= user.firstName + " " + user.lastName %></h1>
-    <div class="card mb-4">
+    <div class="card">
       <img class="card-img-top" src="<%= user.avatar %>" alt="user profile image">
+      <h3 class="card-title"><%= user.firstName + " " + user.lastName %></h3>
       <div class="card-body">Email: <a href="mailto:<%= user.email %>"><%= user.email %></a></div>
-      <p class="card-text">
+      <p class="card-text mr-2">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
         Veniam, fugiat repudiandae neque sed in unde dolore nulla 
         consectetur tempora quis. Nisi eaque accusantium sint minima 
         quas amet corporis perspiciatis nostrum?
       </p>
+      <div class="mb-3">
+        <% if (!user.followers.includes(currentUser.id) && user.username !== currentUser.username) { %>
+          <a href="/users/<%= user._id %>/follow"><button class="btn btn-primary">Follow <%= user.username %></button></a>
+        <% } else if (user.username !== currentUser.username) {%>
+          <a href="/users/<%= user._id %>/follow"><button class="btn btn-primary" disabled>Follow <%= user.username %></button></a>
+        <% } else {%>
+          <a href="/users/<%= user._id %>/edit"><button class="btn btn-primary">Edit Profile</button></a>
+        <% } %>
+      </div>
     </div>
-    <div>
-      <% if (!user.followers.includes(currentUser.id) && user.username !== currentUser.username) { %>
-        <a href="/users/<%= user._id %>/follow"><button class="btn btn-primary">Follow <%= user.username %></button></a>
-      <% } else if (user.username !== currentUser.username) {%>
-        <a href="/users/<%= user._id %>/follow"><button class="btn btn-primary" disabled>Follow <%= user.username %></button></a>
-      <% } else {%>
-        <a href="/users/<%= user._id %>/edit"><button class="btn btn-primary">Edit Profile</button></a>
-      <% } %>
-    </div>
-    
   </div>
   <div class="col-md-8">
-    <h3><%= user.username %>'s campgrounds</h3>
-    <ul>
-      <% campgrounds.forEach((campground) => {%>
-        <li>
-          <h5><a href="/campgrounds/<%=campground.id%>"><%= campground.name %></a></h5>
-        </li>
-      <% }) %>
-    </ul>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title"><%= user.username %>'s campgrounds</h2>
+        <ul>
+          <% campgrounds.forEach((campground) => {%>
+            <li>
+              <h5><a href="/campgrounds/<%=campground.id%>"><%= campground.name %></a></h5>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
