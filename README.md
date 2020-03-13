@@ -19,11 +19,13 @@ This is a Node.js web application with RESTful routing from the Udemy course - [
 ## Frontend
 
 - [Bootstrap 4](https://getbootstrap.com/)
+- [Google Fonts](https://fonts.google.com/)
+- [Font Awesome](https://fontawesome.com/)
 
 ## Backend
 
-- [express](https://gulpjs.com/)
-- [mongodb](https://webpack.js.org/concepts/)
+- [express](https://expressjs.com/)
+- [mongodb](https://www.mongodb.com/)
 - [Google Maps APIs](https://cloud.google.com/maps-platform/)
 
 ## Deployment
