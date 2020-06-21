@@ -30,4 +30,4 @@ This is a Node.js web application with RESTful routing from the Udemy course - [
 
 ## Deployment
 
-- [Heroku](https://heroku.com/)
+- [Google Cloud](https://cloud.google.com/)
