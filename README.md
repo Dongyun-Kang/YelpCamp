@@ -2,7 +2,7 @@
 This is a Node.js web application with RESTful routing from the Udemy course - [The Web Developer Bootcamp](https://www.udemy.com/the-web-developer-bootcamp/) by Colt Steele.
   
 # Live Demo
-<li><a href="https://yelpcamp8338.herokuapp.com/">Live Demo Link</a></li>
+<li><a href="https://yelpcamp-281002.ts.r.appspot.com/">Live Demo Link</a></li>
 <li>Login username: guest</li>
 <li>Login password: guest</li>
 
